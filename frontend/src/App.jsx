@@ -4,21 +4,41 @@ import ReactMarkdown from "react-markdown";
 
 const BACKEND = "http://127.0.0.1:5000";
 
+const C = {
+  bg:        "#070b0f",
+  panel:     "#0c1117",
+  border:    "#1a2535",
+  borderGlow:"#00d4ff",
+  accent:    "#00d4ff",
+  accentDim: "#0a4a5c",
+  green:     "#00ff88",
+  greenDim:  "#003322",
+  purple:    "#7c3aed",
+  text:      "#c8d8e8",
+  textDim:   "#4a6070",
+  textBright:"#eef4fa",
+  userBg:    "#0d1f2d",
+  aiBg:      "#0a0f14",
+};
+
 function SourceBadge({ source, page }) {
-  const name = source.split("/").pop().replace(".pdf", "");
+  const name = source.split("/").pop().replace(".pdf", "").toUpperCase();
   return (
     <span style={{
-      display: "inline-flex", alignItems: "center", gap: "4px",
-      background: "#f5f0e8", border: "1px solid #d4c4a0",
-      borderRadius: "4px", padding: "2px 8px",
-      fontSize: "11px", color: "#7a5c2e", fontFamily: "'JetBrains Mono', monospace",
-      marginRight: "6px", marginTop: "4px"
+      display: "inline-flex", alignItems: "center", gap: "5px",
+      background: "rgba(0,212,255,0.05)",
+      border: `1px solid rgba(0,212,255,0.25)`,
+      borderRadius: "3px", padding: "2px 8px",
+      fontSize: "10px", color: C.accent,
+      fontFamily: "'JetBrains Mono', monospace",
+      marginRight: "6px", marginTop: "4px",
+      letterSpacing: "0.05em"
     }}>
-      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
         <polyline points="14 2 14 8 20 8"/>
       </svg>
-      {name} · p.{page}
+      {name} · P{page}
     </span>
   );
 }
@@ -29,74 +49,79 @@ function Message({ msg }) {
     <div style={{
       display: "flex",
       justifyContent: isUser ? "flex-end" : "flex-start",
-      marginBottom: "24px",
-      gap: "12px",
-      alignItems: "flex-start"
+      marginBottom: "20px",
+      gap: "10px",
+      alignItems: "flex-start",
+      animation: "fadeUp 0.25s ease"
     }}>
       {!isUser && (
         <div style={{
-          width: "32px", height: "32px", borderRadius: "50%",
-          background: "linear-gradient(135deg, #8b6914, #c4922a)",
+          width: "30px", height: "30px", borderRadius: "6px", flexShrink: 0,
+          background: "linear-gradient(135deg, #003344, #006688)",
+          border: `1px solid ${C.accent}`,
           display: "flex", alignItems: "center", justifyContent: "center",
-          flexShrink: 0, marginTop: "2px",
-          boxShadow: "0 2px 8px rgba(139,105,20,0.3)"
+          boxShadow: `0 0 12px rgba(0,212,255,0.3)`, marginTop: "2px"
         }}>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
-            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
-            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={C.accent} strokeWidth="2">
+            <circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
           </svg>
         </div>
       )}
-      <div style={{ maxWidth: "80%", display: "flex", flexDirection: "column", alignItems: isUser ? "flex-end" : "flex-start" }}>
+
+      <div style={{ maxWidth: "78%", display: "flex", flexDirection: "column", alignItems: isUser ? "flex-end" : "flex-start" }}>
         <div style={{
-          background: isUser
-            ? "linear-gradient(135deg, #2c1810, #4a2c1a)"
-            : "#faf7f2",
-          border: isUser ? "none" : "1px solid #e8dfc8",
-          borderRadius: isUser ? "18px 18px 4px 18px" : "4px 18px 18px 18px",
-          padding: "14px 18px",
-          color: isUser ? "#f5ead8" : "#2c2416",
-          fontSize: "14.5px",
-          lineHeight: "1.75",
+          background: isUser ? C.userBg : C.aiBg,
+          border: isUser
+            ? `1px solid rgba(0,212,255,0.2)`
+            : `1px solid ${C.border}`,
+          borderRadius: isUser ? "12px 12px 2px 12px" : "2px 12px 12px 12px",
+          padding: "12px 16px",
+          color: C.text,
+          fontSize: "14px",
+          lineHeight: "1.7",
+          fontFamily: isUser ? "'JetBrains Mono', monospace" : "'Inter', system-ui, sans-serif",
           boxShadow: isUser
-            ? "0 4px 16px rgba(44,24,16,0.25)"
-            : "0 2px 8px rgba(0,0,0,0.06)",
-          fontFamily: isUser ? "'JetBrains Mono', monospace" : "'Crimson Pro', Georgia, serif",
-          letterSpacing: isUser ? "0.01em" : "0"
+            ? `0 0 20px rgba(0,212,255,0.08), inset 0 1px 0 rgba(0,212,255,0.1)`
+            : `0 2px 12px rgba(0,0,0,0.4)`,
+          position: "relative"
         }}>
           {isUser ? (
-            <span>› {msg.content}</span>
+            <span style={{ color: C.textBright, fontSize: "13px" }}>
+              <span style={{ color: C.accent, marginRight: "6px" }}>›</span>
+              {msg.content}
+            </span>
           ) : (
-            <ReactMarkdown
-              components={{
-                h1: ({ children }) => <h1 style={{ fontSize: "18px", fontWeight: "600", color: "#1a1208", marginBottom: "10px", marginTop: "4px", fontFamily: "'Crimson Pro', serif" }}>{children}</h1>,
-                h2: ({ children }) => <h2 style={{ fontSize: "16px", fontWeight: "600", color: "#8b6914", marginBottom: "8px", marginTop: "16px", fontFamily: "'Crimson Pro', serif" }}>{children}</h2>,
-                p: ({ children }) => <p style={{ marginBottom: "10px", marginTop: 0 }}>{children}</p>,
-                ul: ({ children }) => <ul style={{ paddingLeft: "20px", marginBottom: "10px" }}>{children}</ul>,
-                ol: ({ children }) => <ol style={{ paddingLeft: "20px", marginBottom: "10px" }}>{children}</ol>,
-                li: ({ children }) => <li style={{ marginBottom: "4px" }}>{children}</li>,
-                strong: ({ children }) => <strong style={{ color: "#1a1208", fontWeight: "700" }}>{children}</strong>,
-                code: ({ children }) => <code style={{ background: "#ede8dc", padding: "1px 5px", borderRadius: "3px", fontSize: "12px", fontFamily: "monospace", color: "#7a5c2e" }}>{children}</code>,
-              }}
-            >
+            <ReactMarkdown components={{
+              h1: ({ children }) => <h1 style={{ fontSize: "16px", fontWeight: "700", color: C.textBright, marginBottom: "10px", marginTop: "4px" }}>{children}</h1>,
+              h2: ({ children }) => <h2 style={{ fontSize: "14px", fontWeight: "600", color: C.accent, marginBottom: "8px", marginTop: "14px", letterSpacing: "0.03em" }}>{children}</h2>,
+              p: ({ children }) => <p style={{ marginBottom: "8px", marginTop: 0 }}>{children}</p>,
+              ul: ({ children }) => <ul style={{ paddingLeft: "18px", marginBottom: "8px" }}>{children}</ul>,
+              ol: ({ children }) => <ol style={{ paddingLeft: "18px", marginBottom: "8px" }}>{children}</ol>,
+              li: ({ children }) => <li style={{ marginBottom: "4px", color: C.text }}>{children}</li>,
+              strong: ({ children }) => <strong style={{ color: C.textBright, fontWeight: "600" }}>{children}</strong>,
+              code: ({ children }) => <code style={{ background: "rgba(0,212,255,0.08)", color: C.accent, padding: "1px 5px", borderRadius: "3px", fontSize: "12px", fontFamily: "'JetBrains Mono', monospace", border: "1px solid rgba(0,212,255,0.15)" }}>{children}</code>,
+            }}>
               {msg.content}
             </ReactMarkdown>
           )}
         </div>
+
         {msg.sources && msg.sources.length > 0 && (
-          <div style={{ marginTop: "8px", display: "flex", flexWrap: "wrap" }}>
+          <div style={{ marginTop: "6px", display: "flex", flexWrap: "wrap" }}>
             {msg.sources.map((s, i) => <SourceBadge key={i} source={s.source} page={s.page} />)}
           </div>
         )}
       </div>
+
       {isUser && (
         <div style={{
-          width: "32px", height: "32px", borderRadius: "50%",
-          background: "#2c1810",
+          width: "30px", height: "30px", borderRadius: "6px", flexShrink: 0,
+          background: "#0d1f2d",
+          border: `1px solid rgba(0,212,255,0.2)`,
           display: "flex", alignItems: "center", justifyContent: "center",
-          flexShrink: 0, marginTop: "2px"
+          marginTop: "2px"
         }}>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f5ead8" strokeWidth="2">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke={C.textDim} strokeWidth="2">
             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
             <circle cx="12" cy="7" r="4"/>
           </svg>
@@ -108,29 +133,29 @@ function Message({ msg }) {
 
 function TypingIndicator() {
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "24px" }}>
+    <div style={{ display: "flex", gap: "10px", marginBottom: "20px", alignItems: "flex-start" }}>
       <div style={{
-        width: "32px", height: "32px", borderRadius: "50%",
-        background: "linear-gradient(135deg, #8b6914, #c4922a)",
-        display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0
+        width: "30px", height: "30px", borderRadius: "6px", flexShrink: 0,
+        background: "linear-gradient(135deg, #003344, #006688)",
+        border: `1px solid ${C.accent}`,
+        display: "flex", alignItems: "center", justifyContent: "center",
+        boxShadow: `0 0 12px rgba(0,212,255,0.3)`
       }}>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
-          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
-          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={C.accent} strokeWidth="2">
+          <circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
         </svg>
       </div>
       <div style={{
-        background: "#faf7f2", border: "1px solid #e8dfc8",
-        borderRadius: "4px 18px 18px 18px",
-        padding: "16px 20px", display: "flex", gap: "6px", alignItems: "center"
+        background: C.aiBg, border: `1px solid ${C.border}`,
+        borderRadius: "2px 12px 12px 12px",
+        padding: "14px 18px", display: "flex", gap: "5px", alignItems: "center"
       }}>
-        {[0, 1, 2].map(i => (
+        {[0,1,2].map(i => (
           <div key={i} style={{
-            width: "6px", height: "6px", borderRadius: "50%",
-            background: "#c4922a",
-            animation: "pulse 1.2s ease-in-out infinite",
-            animationDelay: `${i * 0.2}s`
-          }} />
+            width: "5px", height: "5px", borderRadius: "50%",
+            background: C.accent,
+            animation: `blink 1.2s ease-in-out ${i * 0.2}s infinite`
+          }}/>
         ))}
       </div>
     </div>
@@ -138,13 +163,11 @@ function TypingIndicator() {
 }
 
 export default function App() {
-  const [messages, setMessages] = useState([
-    {
-      role: "assistant",
-      content: "Welcome. Upload your documents to begin querying the knowledge base. I can answer questions, compare concepts, and trace every answer back to its source.",
-      sources: []
-    }
-  ]);
+  const [messages, setMessages] = useState([{
+    role: "assistant",
+    content: "System online. Upload PDF documents to initialize the knowledge base. All answers are grounded in your documents with source citations.",
+    sources: []
+  }]);
   const [input, setInput] = useState("");
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -153,14 +176,13 @@ export default function App() {
   const [dragOver, setDragOver] = useState(false);
   const messagesEndRef = useRef(null);
   const fileInputRef = useRef(null);
-  const textareaRef = useRef(null);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, loading]);
 
   const uploadFiles = async () => {
-    if (files.length === 0) return;
+    if (!files.length) return;
     const formData = new FormData();
     files.forEach(f => formData.append("files", f));
     try {
@@ -170,12 +192,12 @@ export default function App() {
       setStats(res.data.stats);
       setMessages([{
         role: "assistant",
-        content: `Knowledge base ready. Indexed **${res.data.stats?.pages || "?"} pages** across **${res.data.stats?.chunks || "?"} chunks**. What would you like to know?`,
+        content: `Knowledge base initialized. **${res.data.stats?.pages || "?"} pages** indexed across **${res.data.stats?.chunks || "?"} chunks**. Ready for queries.`,
         sources: []
       }]);
     } catch (err) {
       console.error(err);
-      alert("Upload failed. Is the backend running at localhost:5000?");
+      alert("Upload failed. Ensure backend is running at localhost:5000");
     } finally {
       setLoading(false);
     }
@@ -197,7 +219,7 @@ export default function App() {
     } catch {
       setMessages(prev => [...prev, {
         role: "assistant",
-        content: "Could not reach the backend. Please ensure the Flask server is running.",
+        content: "Connection error. Verify the Flask backend is running.",
         sources: []
       }]);
     } finally {
@@ -205,202 +227,204 @@ export default function App() {
     }
   };
 
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      sendMessage();
-    }
+  const clearChat = async () => {
+    try { await axios.post(`${BACKEND}/reset`); } catch {}
+    setMessages([{
+      role: "assistant",
+      content: "Session cleared. Documents remain indexed.",
+      sources: []
+    }]);
   };
 
   const handleDrop = (e) => {
-    e.preventDefault();
-    setDragOver(false);
+    e.preventDefault(); setDragOver(false);
     const dropped = Array.from(e.dataTransfer.files).filter(f => f.type === "application/pdf");
     if (dropped.length) setFiles(dropped);
-  };
-
-  const clearChat = async () => {
-    try {
-      await axios.post(`${BACKEND}/reset`);
-    } catch {
-      // backend reset failed silently — UI still clears
-    }
-    setMessages([{
-      role: "assistant",
-      content: "Chat cleared. Your documents are still indexed — ask away.",
-      sources: []
-    }]);
   };
 
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=Inter:wght@300;400;500;600&display=swap');
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background: #f0ebe0; }
-        @keyframes pulse {
-          0%, 100% { opacity: 0.3; transform: scale(0.8); }
-          50% { opacity: 1; transform: scale(1); }
+        body { background: ${C.bg}; overflow: hidden; }
+
+        @keyframes fadeUp {
+          from { opacity: 0; transform: translateY(6px); }
+          to   { opacity: 1; transform: translateY(0); }
         }
-        @keyframes fadeSlideIn {
-          from { opacity: 0; transform: translateY(8px); }
-          to { opacity: 1; transform: translateY(0); }
+        @keyframes blink {
+          0%,100% { opacity:0.2; transform:scale(0.8); }
+          50%      { opacity:1;   transform:scale(1.1); }
         }
-        @keyframes shimmer {
-          0% { background-position: -200% 0; }
-          100% { background-position: 200% 0; }
+        @keyframes scanline {
+          0%   { transform: translateY(-100%); }
+          100% { transform: translateY(100vh); }
         }
-        ::-webkit-scrollbar { width: 6px; }
+        @keyframes glow-pulse {
+          0%,100% { box-shadow: 0 0 8px rgba(0,212,255,0.3); }
+          50%      { box-shadow: 0 0 20px rgba(0,212,255,0.6); }
+        }
+        @keyframes border-flow {
+          0%   { border-color: rgba(0,212,255,0.15); }
+          50%  { border-color: rgba(0,212,255,0.45); }
+          100% { border-color: rgba(0,212,255,0.15); }
+        }
+
+        ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #d4c4a0; border-radius: 3px; }
-        textarea:focus, button:focus { outline: none; }
-        .upload-zone { transition: all 0.2s ease; }
-        .upload-zone:hover { border-color: #c4922a !important; background: #fdf9f2 !important; }
-        .send-btn:hover { background: #8b6914 !important; }
-        .send-btn:active { transform: scale(0.96); }
-        .upload-btn:hover { background: #7a5c2e !important; color: #fdf9f2 !important; }
+        ::-webkit-scrollbar-thumb { background: #1a3040; border-radius: 2px; }
+        textarea { outline: none; }
+        button { cursor: pointer; }
+
+        .upload-zone:hover {
+          border-color: rgba(0,212,255,0.5) !important;
+          background: rgba(0,212,255,0.04) !important;
+        }
+        .index-btn:not(:disabled):hover {
+          background: rgba(0,212,255,0.15) !important;
+          box-shadow: 0 0 20px rgba(0,212,255,0.25) !important;
+        }
+        .send-btn:not(:disabled):hover {
+          background: rgba(0,212,255,0.2) !important;
+          box-shadow: 0 0 16px rgba(0,212,255,0.4) !important;
+        }
+        .clear-btn:hover {
+          border-color: rgba(0,212,255,0.4) !important;
+          color: ${C.accent} !important;
+          background: rgba(0,212,255,0.05) !important;
+        }
+        .input-wrap:focus-within {
+          border-color: rgba(0,212,255,0.4) !important;
+          box-shadow: 0 0 20px rgba(0,212,255,0.08) !important;
+        }
       `}</style>
 
-      <div style={{
-        display: "flex", height: "100vh", fontFamily: "'Crimson Pro', Georgia, serif",
-        background: "#f0ebe0"
-      }}>
+      <div style={{ display: "flex", height: "100vh", fontFamily: "'Inter', sans-serif", background: C.bg, position: "relative", overflow: "hidden" }}>
 
-        {/* ── LEFT SIDEBAR ── */}
+        {/* Scanline effect */}
+        <div style={{
+          position: "fixed", top: 0, left: 0, right: 0, bottom: 0,
+          background: "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px)",
+          pointerEvents: "none", zIndex: 100
+        }}/>
+
+        {/* ── SIDEBAR ── */}
         <aside style={{
-          width: "280px", flexShrink: 0,
-          background: "#1e140a",
+          width: "260px", flexShrink: 0,
+          background: C.panel,
+          borderRight: `1px solid ${C.border}`,
           display: "flex", flexDirection: "column",
-          padding: "0",
-          boxShadow: "4px 0 24px rgba(0,0,0,0.3)"
+          position: "relative", overflow: "hidden"
         }}>
+          {/* Top glow line */}
+          <div style={{ height: "1px", background: `linear-gradient(90deg, transparent, ${C.accent}, transparent)`, opacity: 0.6 }}/>
 
           {/* Logo */}
-          <div style={{
-            padding: "28px 24px 20px",
-            borderBottom: "1px solid rgba(255,255,255,0.08)"
-          }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "4px" }}>
+          <div style={{ padding: "20px 18px 16px", borderBottom: `1px solid ${C.border}` }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
               <div style={{
-                width: "28px", height: "28px", borderRadius: "6px",
-                background: "linear-gradient(135deg, #8b6914, #c4922a)",
-                display: "flex", alignItems: "center", justifyContent: "center"
+                width: "32px", height: "32px", borderRadius: "8px",
+                background: "linear-gradient(135deg, #003a4d, #006688)",
+                border: `1px solid ${C.accent}`,
+                display: "flex", alignItems: "center", justifyContent: "center",
+                boxShadow: `0 0 16px rgba(0,212,255,0.3)`,
+                animation: "glow-pulse 3s ease-in-out infinite"
               }}>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5">
-                  <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={C.accent} strokeWidth="2">
+                  <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                  <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
                 </svg>
               </div>
               <div>
-                <div style={{ color: "#f5ead8", fontSize: "15px", fontWeight: "600", letterSpacing: "0.02em" }}>DocMind</div>
-                <div style={{ color: "#8b7355", fontSize: "10px", fontFamily: "'JetBrains Mono', monospace", letterSpacing: "0.08em" }}>RAG · v2.0</div>
+                <div style={{ color: C.textBright, fontSize: "15px", fontWeight: "600", fontFamily: "'JetBrains Mono', monospace", letterSpacing: "0.05em" }}>DocMind</div>
+                <div style={{ color: C.textDim, fontSize: "10px", fontFamily: "'JetBrains Mono', monospace", letterSpacing: "0.1em" }}>RAG · v2.0</div>
               </div>
             </div>
           </div>
 
-          {/* Upload Zone */}
-          <div style={{ padding: "20px 16px", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
-            <div style={{ color: "#8b7355", fontSize: "10px", fontFamily: "'JetBrains Mono', monospace", letterSpacing: "0.1em", marginBottom: "12px" }}>
-              DOCUMENT CORPUS
+          {/* Upload */}
+          <div style={{ padding: "16px 14px", borderBottom: `1px solid ${C.border}` }}>
+            <div style={{ color: C.textDim, fontSize: "9px", fontFamily: "'JetBrains Mono', monospace", letterSpacing: "0.15em", marginBottom: "10px" }}>
+              // DOCUMENT CORPUS
             </div>
 
             <div
               className="upload-zone"
               onClick={() => fileInputRef.current?.click()}
               onDrop={handleDrop}
-              onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
+              onDragOver={e => { e.preventDefault(); setDragOver(true); }}
               onDragLeave={() => setDragOver(false)}
               style={{
-                border: `1.5px dashed ${dragOver ? "#c4922a" : "#4a3520"}`,
-                borderRadius: "8px",
-                padding: "20px 12px",
-                textAlign: "center",
-                cursor: "pointer",
-                background: dragOver ? "rgba(196,146,42,0.08)" : "rgba(255,255,255,0.02)",
-                transition: "all 0.2s",
-                marginBottom: "12px"
+                border: `1px dashed ${dragOver ? C.accent : "rgba(0,212,255,0.2)"}`,
+                borderRadius: "6px", padding: "16px 10px", textAlign: "center",
+                cursor: "pointer", marginBottom: "10px",
+                background: dragOver ? "rgba(0,212,255,0.05)" : "rgba(0,212,255,0.01)",
+                transition: "all 0.2s", animation: "border-flow 3s ease-in-out infinite"
               }}
             >
-              <input
-                ref={fileInputRef}
-                type="file"
-                multiple
-                accept=".pdf"
+              <input ref={fileInputRef} type="file" multiple accept=".pdf"
                 onChange={e => setFiles(Array.from(e.target.files))}
-                style={{ display: "none" }}
-              />
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8b7355" strokeWidth="1.5" style={{ marginBottom: "8px" }}>
+                style={{ display: "none" }} />
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={files.length ? C.accent : C.textDim} strokeWidth="1.5" style={{ marginBottom: "6px" }}>
                 <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
                 <polyline points="14 2 14 8 20 8"/>
                 <line x1="12" y1="18" x2="12" y2="12"/>
                 <line x1="9" y1="15" x2="15" y2="15"/>
               </svg>
-              <div style={{ color: "#a08060", fontSize: "12px", lineHeight: "1.5" }}>
-                {files.length > 0
+              <div style={{ color: files.length ? C.accent : C.textDim, fontSize: "11px", fontFamily: "'JetBrains Mono', monospace", lineHeight: 1.4 }}>
+                {files.length
                   ? files.map(f => f.name).join(", ")
-                  : "Drop PDFs here or click to browse"}
+                  : "drop PDFs / click to browse"}
               </div>
             </div>
 
             <button
-              className="upload-btn"
+              className="index-btn"
               onClick={uploadFiles}
-              disabled={loading || files.length === 0}
+              disabled={loading || !files.length}
               style={{
-                width: "100%",
-                padding: "10px",
-                background: files.length > 0 ? "#c4922a" : "#2a1f14",
-                color: files.length > 0 ? "#1a0f04" : "#4a3520",
-                border: "none",
-                borderRadius: "6px",
-                fontSize: "12px",
+                width: "100%", padding: "9px",
+                background: files.length ? "rgba(0,212,255,0.08)" : "rgba(255,255,255,0.02)",
+                color: files.length ? C.accent : C.textDim,
+                border: `1px solid ${files.length ? "rgba(0,212,255,0.35)" : C.border}`,
+                borderRadius: "5px", fontSize: "11px",
                 fontFamily: "'JetBrains Mono', monospace",
-                fontWeight: "500",
-                cursor: files.length > 0 ? "pointer" : "not-allowed",
-                transition: "all 0.2s",
-                letterSpacing: "0.05em"
+                fontWeight: "500", letterSpacing: "0.08em",
+                transition: "all 0.2s", cursor: files.length ? "pointer" : "not-allowed"
               }}
             >
-              {loading && !uploaded ? "INDEXING..." : "INDEX DOCUMENTS"}
+              {loading && !uploaded ? "[ INDEXING... ]" : "[ INDEX DOCUMENTS ]"}
             </button>
           </div>
 
           {/* Stats */}
           {stats && (
-            <div style={{ padding: "16px", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
-              <div style={{ color: "#8b7355", fontSize: "10px", fontFamily: "'JetBrains Mono', monospace", letterSpacing: "0.1em", marginBottom: "12px" }}>
-                INDEX STATS
+            <div style={{ padding: "14px", borderBottom: `1px solid ${C.border}` }}>
+              <div style={{ color: C.textDim, fontSize: "9px", fontFamily: "'JetBrains Mono', monospace", letterSpacing: "0.15em", marginBottom: "10px" }}>
+                // INDEX STATS
               </div>
-              {[
-                { label: "Pages", value: stats.pages, icon: "📄" },
-                { label: "Chunks", value: stats.chunks, icon: "🧩" },
-              ].map(s => (
-                <div key={s.label} style={{
-                  display: "flex", justifyContent: "space-between", alignItems: "center",
-                  marginBottom: "8px"
-                }}>
-                  <span style={{ color: "#6b5540", fontSize: "12px" }}>{s.label}</span>
-                  <span style={{
-                    color: "#c4922a", fontSize: "12px",
-                    fontFamily: "'JetBrains Mono', monospace", fontWeight: "500"
-                  }}>{s.value}</span>
+              {[["pages", stats.pages], ["chunks", stats.chunks]].map(([k, v]) => (
+                <div key={k} style={{ display: "flex", justifyContent: "space-between", marginBottom: "6px" }}>
+                  <span style={{ color: C.textDim, fontSize: "11px", fontFamily: "'JetBrains Mono', monospace" }}>{k}</span>
+                  <span style={{ color: C.accent, fontSize: "11px", fontFamily: "'JetBrains Mono', monospace", fontWeight: "600" }}>{v}</span>
                 </div>
               ))}
               <div style={{
-                marginTop: "12px", padding: "8px 10px",
-                background: "rgba(196,146,42,0.1)", borderRadius: "5px",
-                border: "1px solid rgba(196,146,42,0.2)"
+                marginTop: "10px", padding: "6px 10px", borderRadius: "4px",
+                background: "rgba(0,255,136,0.05)", border: "1px solid rgba(0,255,136,0.2)"
               }}>
-                <div style={{ color: "#c4922a", fontSize: "11px", fontFamily: "'JetBrains Mono', monospace" }}>
+                <span style={{ color: C.green, fontSize: "10px", fontFamily: "'JetBrains Mono', monospace" }}>
                   ● READY
-                </div>
+                </span>
               </div>
             </div>
           )}
 
-          {/* Pipeline info */}
-          <div style={{ padding: "16px", marginTop: "auto" }}>
-            <div style={{ color: "#4a3520", fontSize: "10px", fontFamily: "'JetBrains Mono', monospace", letterSpacing: "0.08em", marginBottom: "10px" }}>
-              PIPELINE
+          {/* Pipeline */}
+          <div style={{ padding: "14px", marginTop: "auto" }}>
+            <div style={{ color: C.textDim, fontSize: "9px", fontFamily: "'JetBrains Mono', monospace", letterSpacing: "0.15em", marginBottom: "10px" }}>
+              // PIPELINE
             </div>
             {[
               "Hybrid Dense + BM25",
@@ -409,76 +433,75 @@ export default function App() {
               "Parent Reconstruction",
               "LLM w/ Citations"
             ].map((step, i) => (
-              <div key={i} style={{
-                display: "flex", alignItems: "center", gap: "6px",
-                marginBottom: "6px"
-              }}>
+              <div key={i} style={{ display: "flex", alignItems: "center", gap: "7px", marginBottom: "7px" }}>
                 <div style={{
                   width: "4px", height: "4px", borderRadius: "50%",
-                  background: uploaded ? "#c4922a" : "#3a2a1a", flexShrink: 0
-                }} />
-                <span style={{ color: uploaded ? "#6b5540" : "#3a2a1a", fontSize: "10px", fontFamily: "'JetBrains Mono', monospace" }}>
+                  background: uploaded ? C.accent : C.border,
+                  boxShadow: uploaded ? `0 0 6px ${C.accent}` : "none",
+                  flexShrink: 0, transition: "all 0.5s"
+                }}/>
+                <span style={{ color: uploaded ? C.textDim : "#1e2d3a", fontSize: "10px", fontFamily: "'JetBrains Mono', monospace", transition: "color 0.5s" }}>
                   {step}
                 </span>
               </div>
             ))}
           </div>
+
+          {/* Bottom glow */}
+          <div style={{ height: "1px", background: `linear-gradient(90deg, transparent, ${C.accent}, transparent)`, opacity: 0.3 }}/>
         </aside>
 
-        {/* ── MAIN AREA ── */}
-        <main style={{
-          flex: 1, display: "flex", flexDirection: "column",
-          background: "#f5f0e8",
-          minWidth: 0
-        }}>
+        {/* ── MAIN ── */}
+        <main style={{ flex: 1, display: "flex", flexDirection: "column", background: C.bg, minWidth: 0 }}>
 
           {/* Header */}
           <header style={{
-            height: "56px", borderBottom: "1px solid #ddd4bc",
+            height: "52px",
+            borderBottom: `1px solid ${C.border}`,
             display: "flex", alignItems: "center", justifyContent: "space-between",
-            padding: "0 32px",
-            background: "#faf7f2"
+            padding: "0 28px",
+            background: "rgba(12,17,23,0.9)",
+            backdropFilter: "blur(8px)"
           }}>
             <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-              <span style={{ color: "#8b7355", fontSize: "13px", fontFamily: "'JetBrains Mono', monospace" }}>
+              <span style={{ color: C.accent, fontSize: "11px", fontFamily: "'JetBrains Mono', monospace", opacity: 0.5 }}>›</span>
+              <span style={{ color: C.textDim, fontSize: "11px", fontFamily: "'JetBrains Mono', monospace" }}>
                 {uploaded
-                  ? `${files.map(f => f.name.replace(".pdf","")).join(", ")}`
-                  : "No documents loaded"}
+                  ? files.map(f => f.name.replace(".pdf","").toUpperCase()).join(" + ")
+                  : "NO DOCUMENTS LOADED"}
               </span>
             </div>
-            <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+
+            <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
               {uploaded && messages.length > 1 && (
                 <button
+                  className="clear-btn"
                   onClick={clearChat}
                   style={{
                     display: "flex", alignItems: "center", gap: "5px",
                     background: "transparent",
-                    border: "1px solid #d4c4a0",
-                    borderRadius: "6px",
-                    padding: "4px 12px",
-                    cursor: "pointer",
-                    color: "#8b7355",
-                    fontSize: "11px",
+                    border: `1px solid ${C.border}`,
+                    borderRadius: "4px", padding: "4px 10px",
+                    color: C.textDim, fontSize: "10px",
                     fontFamily: "'JetBrains Mono', monospace",
-                    transition: "all 0.2s"
+                    letterSpacing: "0.06em", transition: "all 0.2s"
                   }}
-                  onMouseEnter={e => { e.currentTarget.style.background = "#f5ead8"; e.currentTarget.style.borderColor = "#c4922a"; e.currentTarget.style.color = "#7a5c2e"; }}
-                  onMouseLeave={e => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.borderColor = "#d4c4a0"; e.currentTarget.style.color = "#8b7355"; }}
                 >
-                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <polyline points="1 4 1 10 7 10"/>
                     <path d="M3.51 15a9 9 0 1 0 .49-3.5"/>
                   </svg>
-                  CLEAR CHAT
+                  CLEAR
                 </button>
               )}
               <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
                 <div style={{
-                  width: "7px", height: "7px", borderRadius: "50%",
-                  background: uploaded ? "#5a9a2a" : "#c4922a",
-                  boxShadow: uploaded ? "0 0 6px rgba(90,154,42,0.5)" : "0 0 6px rgba(196,146,42,0.5)"
-                }} />
-                <span style={{ color: "#8b7355", fontSize: "11px", fontFamily: "'JetBrains Mono', monospace" }}>
+                  width: "6px", height: "6px", borderRadius: "50%",
+                  background: uploaded ? C.green : "#ff6b35",
+                  boxShadow: uploaded ? `0 0 8px ${C.green}` : "0 0 8px #ff6b35",
+                  animation: "glow-pulse 2s ease-in-out infinite"
+                }}/>
+                <span style={{ color: C.textDim, fontSize: "10px", fontFamily: "'JetBrains Mono', monospace", letterSpacing: "0.1em" }}>
                   {uploaded ? "INDEXED" : "AWAITING DOCS"}
                 </span>
               </div>
@@ -488,47 +511,42 @@ export default function App() {
           {/* Messages */}
           <div style={{
             flex: 1, overflowY: "auto",
-            padding: "32px 48px",
-            display: "flex", flexDirection: "column"
+            padding: "28px 36px",
+            background: `radial-gradient(ellipse at 20% 50%, rgba(0,50,80,0.08) 0%, transparent 60%),
+                         radial-gradient(ellipse at 80% 20%, rgba(0,30,60,0.06) 0%, transparent 50%)`
           }}>
-            {messages.map((msg, i) => (
-              <div key={i} style={{ animation: "fadeSlideIn 0.3s ease" }}>
-                <Message msg={msg} />
-              </div>
-            ))}
+            {messages.map((msg, i) => <Message key={i} msg={msg} />)}
             {loading && <TypingIndicator />}
             <div ref={messagesEndRef} />
           </div>
 
           {/* Input */}
-          <div style={{
-            padding: "16px 48px 24px",
-            background: "linear-gradient(to top, #f5f0e8 80%, transparent)",
-          }}>
-            <div style={{
-              background: "#faf7f2",
-              border: "1.5px solid #d4c4a0",
-              borderRadius: "12px",
-              display: "flex", alignItems: "flex-end", gap: "12px",
-              padding: "12px 16px",
-              boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
-              transition: "border-color 0.2s"
-            }}>
+          <div style={{ padding: "14px 36px 20px", borderTop: `1px solid ${C.border}`, background: "rgba(7,11,15,0.95)" }}>
+            <div
+              className="input-wrap"
+              style={{
+                display: "flex", alignItems: "flex-end", gap: "10px",
+                background: C.panel,
+                border: `1px solid ${C.border}`,
+                borderRadius: "8px", padding: "10px 14px",
+                transition: "all 0.2s"
+              }}
+            >
+              <span style={{ color: C.accent, fontFamily: "'JetBrains Mono', monospace", fontSize: "14px", paddingBottom: "1px", opacity: 0.7 }}>›</span>
               <textarea
-                ref={textareaRef}
                 value={input}
                 onChange={e => setInput(e.target.value)}
-                onKeyDown={handleKeyDown}
-                placeholder={uploaded ? "Ask anything about your documents..." : "Upload documents first to begin querying..."}
+                onKeyDown={e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(); }}}
+                placeholder={uploaded ? "Query the knowledge base..." : "Upload documents to begin..."}
                 disabled={!uploaded || loading}
                 rows={1}
                 style={{
-                  flex: 1, background: "transparent", border: "none",
-                  resize: "none", fontSize: "15px",
-                  fontFamily: "'Crimson Pro', Georgia, serif",
-                  color: "#2c2416", lineHeight: "1.6",
-                  maxHeight: "120px", overflowY: "auto",
-                  opacity: !uploaded ? 0.5 : 1
+                  flex: 1, background: "transparent", border: "none", resize: "none",
+                  fontSize: "14px", fontFamily: "'JetBrains Mono', monospace",
+                  color: C.textBright, lineHeight: "1.6",
+                  maxHeight: "100px", overflowY: "auto",
+                  opacity: !uploaded ? 0.3 : 1,
+                  caretColor: C.accent
                 }}
               />
               <button
@@ -536,26 +554,23 @@ export default function App() {
                 onClick={sendMessage}
                 disabled={!input.trim() || loading || !uploaded}
                 style={{
-                  width: "36px", height: "36px", borderRadius: "8px",
-                  background: input.trim() && uploaded ? "#c4922a" : "#e8dfc8",
-                  border: "none", cursor: input.trim() && uploaded ? "pointer" : "not-allowed",
+                  width: "32px", height: "32px", borderRadius: "6px", flexShrink: 0,
+                  background: input.trim() && uploaded ? "rgba(0,212,255,0.1)" : "transparent",
+                  border: `1px solid ${input.trim() && uploaded ? "rgba(0,212,255,0.35)" : C.border}`,
                   display: "flex", alignItems: "center", justifyContent: "center",
-                  flexShrink: 0, transition: "all 0.2s"
+                  transition: "all 0.2s",
+                  cursor: input.trim() && uploaded ? "pointer" : "not-allowed"
                 }}
               >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-                  stroke={input.trim() && uploaded ? "white" : "#a08060"} strokeWidth="2.5">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                  stroke={input.trim() && uploaded ? C.accent : C.textDim} strokeWidth="2.5">
                   <line x1="22" y1="2" x2="11" y2="13"/>
                   <polygon points="22 2 15 22 11 13 2 9 22 2"/>
                 </svg>
               </button>
             </div>
-            <div style={{
-              textAlign: "center", marginTop: "8px",
-              color: "#b0a080", fontSize: "11px",
-              fontFamily: "'JetBrains Mono', monospace"
-            }}>
-              Enter to send · Shift+Enter for new line · Answers grounded in your documents
+            <div style={{ textAlign: "center", marginTop: "6px", color: C.textDim, fontSize: "10px", fontFamily: "'JetBrains Mono', monospace", letterSpacing: "0.05em" }}>
+              enter to send · shift+enter for newline · answers grounded in your documents
             </div>
           </div>
         </main>
