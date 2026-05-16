@@ -1,0 +1,33 @@
+# requirements.txt — Production RAG Backend
+
+# Core
+flask>=3.0.0
+flask-cors>=4.0.0
+
+# LangChain
+langchain>=0.2.0
+langchain-community>=0.2.0
+langchain-chroma>=0.1.0
+langchain-huggingface>=0.0.3
+langchain-text-splitters>=0.2.0
+
+# Embeddings & Reranker
+sentence-transformers>=3.0.0
+
+# Vector Store
+chromadb>=0.5.0
+
+# BM25
+rank-bm25>=0.2.2
+
+# LLM
+ollama>=0.2.0
+
+# NLP (for BM25 tokenization)
+nltk>=3.8.0
+
+# PDF reading
+pypdf>=4.0.0
+
+# Utilities
+python-dotenv>=1.0.0   # optional: for env-based config
