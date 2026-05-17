@@ -324,7 +324,7 @@ MEMORY_WINDOW = 4                      # Conversation turns to remember
 
 ## 👨‍💻 Author
 
-**Shishir**
+**Shishir M S**
 - GitHub: [@shishir-20](https://github.com/shishir-20)
 
 
