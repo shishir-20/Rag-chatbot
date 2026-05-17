@@ -326,7 +326,7 @@ MEMORY_WINDOW = 4                      # Conversation turns to remember
 
 **Shishir**
 - GitHub: [@shishir-20](https://github.com/shishir-20)
-- LinkedIn: [Add your LinkedIn URL here]
+
 
 ---
 
